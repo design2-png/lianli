@@ -249,7 +249,7 @@
   .asg .proc.on{display:block}
   .asg .proc .ln{opacity:0;display:flex;gap:16px}.asg .proc .ln.on{opacity:1}
   .asg .proc .t{color:var(--dim);flex:0 0 7em}.asg .proc .k{color:var(--text)}.asg .proc .s{color:var(--signal)}.asg .proc .g{color:var(--ok)}
-  .asg .res{display:none;grid-template-columns:1fr;justify-items:center}
+  .asg .res{display:none;grid-template-columns:1fr;justify-items:center;scroll-margin-top:96px;padding-top:24px}
   .asg .res.on{display:grid}
   @media (max-width:900px){.asg .res{grid-template-columns:1fr}}
   .asg .res .big{border:1px solid rgba(242,240,235,.25);border-left:3px solid var(--text);padding:28px;background:rgba(20,20,23,.75);display:grid;align-content:space-between;gap:24px;position:relative;min-height:300px}
@@ -370,6 +370,7 @@
   .plate .mfr small{font-size:1.6cqw;letter-spacing:.16em;color:#232427}
   .plate .blackbar{display:inline-block;width:5em;height:.8em;background:#141517;vertical-align:-.1em;border-radius:1px}
   /* ---------- MEMORANDUM ---------- */
+  .brief[hidden],.asg[hidden]{display:none}
   .brief{position:relative;padding:clamp(72px,12vh,140px) var(--gut);border-bottom:1px solid var(--line);background:var(--carbon);font-family:var(--mono)}
   .bwrap{max-width:880px;margin:0 auto;display:grid;gap:0}
   .bhead{display:flex;justify-content:space-between;gap:16px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);padding-bottom:22px;border-bottom:1px solid rgba(242,240,235,.14)}
@@ -399,6 +400,104 @@
     .asg .steps span{white-space:nowrap}
     .stage{min-height:520px}
   }
+  /* ---------- DIVISION FLOOR ---------- */
+  .floor{position:relative;min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;gap:0;padding:calc(72px + env(safe-area-inset-top,0px)) var(--gut) 28px;border-bottom:1px solid var(--line);overflow:hidden;background:var(--carbon)}
+  .floor[hidden]{display:none}
+  .floor .fbg{position:absolute;inset:0;z-index:0}
+  .floor .fbg img{width:100%;height:100%;object-fit:cover;filter:saturate(.6) contrast(1.05);opacity:.55}
+  .floor .fbg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,12,.85) 0%,rgba(10,10,12,.15) 30%,rgba(10,10,12,.25) 55%,rgba(10,10,12,.96) 100%)}
+  .floor>*{position:relative;z-index:1}
+  .fhead{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;padding-bottom:28px}
+  .fhead h2{font-family:var(--disp);font-weight:800;font-size:clamp(48px,8vw,128px);line-height:.95;letter-spacing:-.02em;margin:6px 0 10px}
+  .fhead .fzh{margin:0;color:var(--muted);font-size:15px}
+  .fhead .fmeta{display:grid;gap:6px;text-align:right;color:var(--dim)}
+  .fhead .fmeta b{color:var(--text);font-weight:500}
+  .bays{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-self:end;margin-top:auto}
+  .bay{border:1px solid rgba(242,240,235,.18);background:rgba(10,10,12,.72);backdrop-filter:blur(6px);display:grid;grid-template-rows:auto auto;position:relative}
+  .bay.open{border-color:rgba(242,240,235,.45)}
+  .bimg{position:relative;aspect-ratio:4/3;max-width:100%;background:radial-gradient(ellipse at 50% 60%,rgba(40,40,44,.9),rgba(10,10,12,1) 75%);display:grid;place-items:center;overflow:hidden;border-bottom:1px solid rgba(242,240,235,.12)}
+  .bimg img{width:100%;height:100%;object-fit:contain;padding:8%;filter:saturate(.75) drop-shadow(0 18px 30px rgba(0,0,0,.7));transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+  .bay.open:hover .bimg img{transform:scale(1.06)}
+  .bay.locked .bimg img{filter:saturate(0) brightness(.45) blur(1.5px)}
+  .bay.locked .bimg::before{z-index:1}
+  .bimg .deny{z-index:2}
+  .bimg .ph{display:grid;gap:4px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+  .bimg .ck{position:absolute;width:14px;height:14px;border:1px solid rgba(242,240,235,.5)}
+  .bimg .ck.a{top:10px;left:10px;border-right:0;border-bottom:0}.bimg .ck.b{bottom:10px;right:10px;border-left:0;border-top:0}
+  .bay.locked .bimg .ph{opacity:.25}
+  .bay.locked .bimg::before{content:"";position:absolute;inset:0;z-index:1;background:repeating-linear-gradient(-45deg,rgba(242,240,235,.05) 0 6px,transparent 6px 14px)}
+  .bimg .deny{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;background:rgba(10,10,12,.85);border-top:2px solid var(--signal);display:grid;gap:2px}
+  .bimg .deny span{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--signal);font-weight:500}
+  .bimg .deny small{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+  .binfo{padding:14px 16px 16px;display:grid;gap:8px}
+  .brow{display:grid;grid-template-columns:78px 1fr;gap:10px;align-items:baseline;font-size:13px}
+  .brow .mono{font-size:9px;color:var(--dim)}
+  .brow b{font-weight:500;color:var(--text)}
+  .brow .code{font-family:var(--mono);letter-spacing:.06em;font-size:14px}
+  .brow .rd{display:inline-block;height:.8em;background:var(--muted);vertical-align:-.05em;border-radius:1px;opacity:.7}
+  .bay.locked .brow b{color:var(--muted)}
+  .bst{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-top:4px;padding-top:10px;border-top:1px solid rgba(242,240,235,.1)}
+  .bst i{display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;margin-right:8px;vertical-align:middle}
+  .bst.ok{color:var(--ok)}.bst.w{color:var(--signal)}
+  .ffoot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--dim);padding-top:24px;font-size:10px}
+  @media (max-width:900px){.bays{grid-template-columns:1fr}.fhead{grid-template-columns:1fr}.fhead .fmeta{text-align:left}.floor{padding-top:calc(60px + env(safe-area-inset-top,0px))}}
+  .floor .fhero{position:absolute;right:calc(var(--gut) + 200px);top:calc(56px + env(safe-area-inset-top,0px));width:min(30vw,420px);z-index:0;pointer-events:none;opacity:.9}
+  .floor .fhero img{width:100%;height:auto;filter:saturate(.8) drop-shadow(0 40px 60px rgba(0,0,0,.8))}
+  @media (max-width:900px){.floor .fhero{display:none}}
+  .routes{display:grid;grid-template-columns:repeat(2,minmax(0,300px));gap:12px;margin-top:28px}
+  .route{text-align:left;border:1px solid rgba(242,240,235,.55);background:rgba(10,10,12,.55);backdrop-filter:blur(4px);padding:16px 18px;display:grid;gap:4px;position:relative;transition:background .15s}
+  .route::after{content:"";position:absolute;right:-1px;top:-1px;width:10px;height:10px;border-top:1px solid var(--text);border-right:1px solid var(--text)}
+  .route .rk{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--signal)}
+  .route b{font-family:var(--tc);font-weight:500;font-size:18px;color:var(--text)}
+  .route small{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--muted)}
+  .route:hover{background:rgba(242,240,235,.1)}
+  .route.alt{border-color:rgba(242,240,235,.25)}
+  .route.alt .rk{color:var(--muted)}
+  @media (max-width:700px){.routes{grid-template-columns:1fr}}
+  .dtabs{display:flex;gap:6px;margin:0 0 14px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+  .dtabs button{padding:8px 14px;border:1px solid rgba(242,240,235,.25);color:var(--muted)}
+  .dtabs button[aria-current]{border-color:var(--text);color:var(--text)}
+  .dtabs[hidden]{display:none}
+  /* ---------- WELCOME ---------- */
+  #welcome{position:fixed;inset:0;z-index:55;background:#050506;display:grid;place-items:center;padding:24px var(--gut);font-family:var(--mono);opacity:0;transition:opacity 1.2s ease}
+  #welcome[hidden]{display:none}
+  #welcome.on{opacity:1}
+  #welcome .wtxt{text-align:center;display:grid;gap:18px}
+  #welcome .w1{font-family:var(--disp);font-weight:500;font-size:clamp(20px,2.6vw,34px);letter-spacing:.24em;text-transform:uppercase;color:var(--text);margin:0;opacity:0;transition:opacity 1.6s ease .6s}
+  #welcome .w2{font-size:10px;letter-spacing:.2em;color:var(--dim);margin:0;opacity:0;transition:opacity 1.2s ease 1.8s}
+  #welcome .w3{font-family:var(--tc);font-weight:300;font-size:13px;letter-spacing:.3em;color:var(--muted);margin:0;opacity:0;transition:opacity 1.2s ease 2.6s}
+  #welcome.on .w1,#welcome.on .w2,#welcome.on .w3{opacity:1}
+  #welcome .wfoot{position:absolute;bottom:calc(28px + env(safe-area-inset-bottom,0px));font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+  #welcome.out{opacity:0;transition:opacity .9s ease}
+  @media (prefers-reduced-motion:reduce){#welcome,#welcome .w1,#welcome .w2,#welcome .w3{transition:none}}
+  .briefWrap{position:fixed;inset:0;z-index:48;background:rgba(5,5,6,.82);backdrop-filter:blur(6px);display:grid;place-items:center;padding:calc(64px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px));overflow:hidden;overscroll-behavior:contain}
+  .briefWrap[hidden]{display:none}
+  .briefWrap .brief{width:min(880px,100%);max-height:100%;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(242,240,235,.2) transparent;border:1px solid rgba(242,240,235,.18);background:var(--carbon);padding:clamp(28px,4vw,48px) clamp(20px,4vw,48px);box-shadow:0 30px 80px rgba(0,0,0,.8);position:relative;border-bottom:1px solid rgba(242,240,235,.18)}
+  .briefWrap .brief::before,.briefWrap .brief::after{content:"";position:absolute;width:14px;height:14px;border:1px solid rgba(242,240,235,.6)}
+  .briefWrap .brief::before{top:-1px;left:-1px;border-right:0;border-bottom:0}.briefWrap .brief::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+  .briefWrap .bwrap{max-width:none}
+  .briefWrap .memo1{padding:26px 0}
+  .back{display:flex;justify-content:flex-end;padding-top:22px}
+  .ack{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:13px 20px;border:1px solid var(--text);color:var(--ink);background:var(--text)}
+  .ack:hover{background:var(--alu)}
+  /* hide scrollbars on desktop (keep scrolling) */
+  @media (min-width:761px){
+    html,body,.briefWrap .brief,#doc{scrollbar-width:none;-ms-overflow-style:none}
+    html::-webkit-scrollbar,body::-webkit-scrollbar,.briefWrap .brief::-webkit-scrollbar,#doc::-webkit-scrollbar{width:0;height:0;display:none}
+  }
+  .asg .lead{max-width:640px;text-align:center;display:grid;gap:10px;margin-bottom:8px;font-family:var(--tc)}
+  .asg .lead p{margin:0;opacity:0;transition:opacity 1.2s ease}
+  .asg .res.on .lead p{opacity:1}
+  .asg .res.on .lead .l2{transition-delay:.9s}.asg .res.on .lead .l3{transition-delay:1.8s}
+  .asg .lead .l1{font-size:clamp(20px,2.2vw,28px);font-weight:300;letter-spacing:.08em;color:var(--text)}
+  .asg .lead .l1 b{font-family:var(--mono);font-weight:500;letter-spacing:.04em}
+  .asg .lead .l2{font-size:15px;color:var(--text);letter-spacing:.06em}
+  .asg .lead .l2 b{font-family:var(--disp);font-weight:800;letter-spacing:.02em}
+  .asg .lead .l3{font-size:12px;color:var(--muted);letter-spacing:.08em}
+  .plateWrap .lead4{font-family:var(--tc);font-size:13px;letter-spacing:.14em;color:var(--muted);margin:22px 0 0;text-align:center}
+  .asg .res .plateWrap{opacity:0;transition:opacity 1.4s ease 2.6s}
+  .asg .res.on .plateWrap{opacity:1}
+  @media (prefers-reduced-motion:reduce){.asg .lead p,.asg .res .plateWrap{transition:none;opacity:1}}
   /* ---------- ISSUANCE OVERLAY ---------- */
   #issue{position:fixed;inset:0;background:var(--carbon);z-index:60;display:flex;flex-direction:column;padding:calc(24px + env(safe-area-inset-top,0px)) var(--gut) calc(24px + env(safe-area-inset-bottom,0px))}
   #issue[hidden]{display:none}
@@ -452,10 +551,19 @@
   <div class="iss-foot"><span>ISSUED, NOT SOLD.</span><span>CHASSIS BY LIAN LI · HUMAN HARDWARE BY EXOBONE</span></div>
 </div>
 
+<div id="welcome" hidden aria-live="polite">
+  <div class="wtxt">
+    <p class="w1">Welcome to the Corp.</p>
+    <p class="w2">員編 <span id="wId" class="num">—</span> · 臨時通行</p>
+    <p class="w3">配發清單開放檢視。</p>
+  </div>
+  <div class="wfoot">Issued, not sold.</div>
+</div>
+
 <header class="top" id="top">
   <div class="brand"><span class="bar" style="width:4.5em"></span><span>THE CORP</span></div>
   <nav aria-label="部門">
-    <a href="#orient">Orientation</a><a href="#assign">Configuration</a><a href="#" aria-disabled="true" style="color:var(--dim)">Divisions · <span class="bar" style="width:3em;background:var(--dim)"></span></a>
+    <a href="#" id="navOri">Orientation</a><a href="#assign" id="navCfg">Configuration</a><a href="cortex.html">Divisions</a>
   </nav>
   <div class="id"><span class="dot" aria-hidden="true"></span><span>員編 <b id="stId" class="num">—</b></span><span>RECRUIT</span><span>部門 <b id="stDept">—</b></span><button class="re" id="reissue">重新核發</button></div>
 </header>
@@ -476,13 +584,16 @@
   <div class="hud br" aria-hidden="true">Chassis by Lian Li<br>Human hardware by Exobone</div>
   <div class="inner">
     <p class="en">Issued, not sold.</p>
-    <p class="sub">本系統內之設備皆為公司配發。持臨時通行者可檢視新進人員須知。</p>
-    <p class="guide"><a href="#orient">首次進入者，請先閱讀須知 ↓</a></p>
+    <p class="sub">本系統內之設備皆為公司配發。請選擇通道。</p>
+    <div class="routes">
+      <button class="route" id="routeA"><span class="rk">A · ONBOARDING</span><b>依程序入職</b><small>須知 → 人員配置 → 核定部門 · 約 2 分鐘</small></button>
+      <button class="route alt" id="routeB"><span class="rk">B · CONTRACTOR</span><b>直接檢視配發清單</b><small>略過程序 · 部門維持「未指派」</small></button>
+    </div>
   </div>
 </section>
 
 <!-- ORIENTATION (memorandum) -->
-<section class="brief" id="orient" aria-label="新進人員須知">
+<div class="briefWrap" id="orientWrap" hidden><section class="brief" id="orient" role="dialog" aria-modal="true" aria-label="新進人員須知">
   <div class="bwrap">
     <div class="bhead"><span>Memorandum · 須知</span><span>供內部參閱 · Internal only</span></div>
     <article class="memo1">
@@ -501,11 +612,12 @@
       <span class="st w">尚未入職</span>
     </article>
     <div class="bfoot"><span>閱畢即視為知悉。</span><span class="num" id="bClock">--:--:--</span></div>
+    <div class="back"><button class="ack" id="ackBtn">知悉 · 繼續 →</button></div>
   </div>
-</section>
+</section></div>
 
 <!-- CONFIGURATION (assignment) -->
-<section class="asg cfg" id="assign" aria-label="人員配置">
+<section class="asg cfg" id="assign" hidden aria-label="人員配置">
   <div class="wrap wide">
     <div class="chead"><span>CFG_001 · 人員配置 · Exoskeleton loadout</span><span class="fill"></span><span class="steps" id="steps"><span class="on">M1</span><span>M2</span><span>M3</span><span>核定</span></span></div>
     <p class="note" id="asgNote">部門由公司依配置核定。請逐項裝載模組。</p>
@@ -588,6 +700,11 @@
     </div>
 
     <div class="res" id="res">
+      <div class="lead">
+        <p class="l1">員編 <b id="leadId" class="num">—</b>，您好。</p>
+        <p class="l2">依作業配置核定，您已派發至 <b id="leadDiv">CORTEX</b> · <span id="leadZh">機構研發部門</span>。</p>
+        <p class="l3">以下為人事部核發之配置銘牌，請妥善保管。銘牌不得轉讓。</p>
+      </div>
       <div class="plateWrap">
         <div class="tagS"><i></i><span>HR · <b id="tagId">T-—</b></span><i></i></div>
         <div class="plate">
@@ -612,7 +729,8 @@
           </div>
         </div>
         <div class="tagS"><i></i><span>ISSUED · NOT FOR RESALE</span><i></i></div>
-        <div class="acts"><button class="btn pri" disabled>前往部門樓層 · <span style="display:inline-block;width:3em;height:.7em;background:currentColor;opacity:.4;vertical-align:middle"></span></button><button class="btn" id="transfer">申請重新配置</button><span class="rec">重配紀錄 <b id="recN">0</b></span></div>
+        <p class="lead4">請前往部門樓層，領取配發設備。</p>
+        <div class="acts"><button class="btn pri" id="goFloor">前往部門樓層 →</button><button class="btn" id="transfer">申請重新配置</button><span class="rec">重配紀錄 <b id="recN">0</b></span></div>
       </div>
       </div>
     </div>
@@ -642,7 +760,7 @@
   function makeId(){var d=new Date();return 'T-'+d.getFullYear()+'-'+pad(d.getMonth()+1)+pad(d.getDate())+'-'+(Math.floor(Math.random()*9000)+1000);}
   function runIssuance(){
     var id=makeId();
-    document.getElementById('stId').textContent=id;document.getElementById('seqId').textContent=id;var f=document.getElementById('fuiId');if(f)f.textContent=id;
+    document.getElementById('stId').textContent=id;document.getElementById('seqId').textContent=id;try{localStorage.setItem('corp_id',id)}catch(e){}var f=document.getElementById('fuiId');if(f)f.textContent=id;
     issue.hidden=false;document.body.style.overflow='hidden';window.scrollTo(0,0);
     lines.forEach(function(l){l.classList.remove('on')});heroLines.forEach(function(l){l.classList.remove('on')});
     idEl.textContent='';
@@ -658,16 +776,8 @@
   runIssuance();
 
 
-  // ---- Memorandum reveal ----
-  (function(){
-    var ms=Array.prototype.slice.call(document.querySelectorAll('.memo1'));if(!ms.length)return;
-    function bc(){var d=new Date();var c=document.getElementById('bClock');if(c)c.textContent=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());}
-    bc();setInterval(bc,1000);
-    if(reduce){ms.forEach(function(m){m.classList.add('on')});return;}
-    var done=false;var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&!done){done=true;
-      ms.forEach(function(m,i){setTimeout(function(){m.classList.add('on')},600+i*1100)});io.disconnect();}})},{threshold:.3});
-    io.observe(ms[0]);
-  })();
+  // ---- Memorandum clock ----
+  (function(){function bc(){var d=new Date();var c=document.getElementById('bClock');if(c)c.textContent=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());}bc();setInterval(bc,1000);})();
 
   // ---- Configuration / Assignment ----
   (function(){
@@ -704,10 +814,11 @@
       setTimeout(function(){proc.classList.remove('on');result();},reduce?100:2500);}
     var chars='█▓▒░#%&@0123456789ABCDEF';
     function decodeAsg(el){var f=el.textContent,n=0;var t=setInterval(function(){n++;var o='';for(var i=0;i<f.length;i++){var c=f[i];if(c===' '){o+=c;continue;}o+= i<n*Math.ceil(f.length/8)?c:chars[Math.floor(Math.random()*chars.length)];}el.textContent=o;if(n>=9){clearInterval(t);el.textContent=f;}},50);}
-    function result(){var k=score();var m=meta[k];
+    var curK=null;
+    function result(){var k=score();curK=k;var m=meta[k];
       var code={cortex:['CTX','01'],bespoke:['ENF','02'],comfort:['PUF','03']}[k];
       
-      document.getElementById('plDiv').textContent=m.n;document.getElementById('plDivZh').textContent=m.d.split(' · ')[1];
+      document.getElementById('plDiv').textContent=m.n;document.getElementById('plDivZh').textContent=m.d.split(' · ')[1];document.getElementById('leadDiv').textContent=m.n;document.getElementById('leadZh').textContent=m.d.split(' · ')[1];document.getElementById('leadId').textContent=document.getElementById('stId').textContent;
       document.getElementById('plObj').textContent=code[1];document.getElementById('plPn').textContent='EXB-'+code[0]+'-R01';
       var id=document.getElementById('stId').textContent;document.getElementById('plSn').textContent=id.slice(7);document.getElementById('tagId').textContent=id;
       var d=new Date();document.getElementById('plLot').textContent=String(d.getFullYear()).slice(2)+pad(d.getMonth()+1)+pad(d.getDate());
@@ -715,8 +826,9 @@
       document.getElementById('plLoad').textContent=[tags['1'],tags['2'],tags['3']].join(' / ');
       document.getElementById('tdiv').innerHTML='▸ '+m.n+' · 已核定';
       var dept=document.getElementById('stDept');if(dept)dept.textContent=m.n;
-      note.textContent='核定完成。閱畢即視為知悉。';res.classList.add('on');if(!reduce)decodeAsg(document.getElementById('plDiv'));
-      res.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});}
+      note.textContent='核定完成。閱畢即視為知悉。';res.classList.add('on');
+      res.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}
+    document.getElementById('goFloor').addEventListener('click',function(){if(!curK)return;try{localStorage.setItem('corp_id',document.getElementById('stId').textContent);localStorage.setItem('corp_div',curK);}catch(e){}location.href=curK+'.html';});
     document.getElementById('transfer').addEventListener('click',function(){recN++;document.getElementById('recN').textContent=recN;ans={};tags={};res.classList.remove('on');
       document.querySelectorAll('.slot .opt').forEach(function(x){x.classList.remove('sel')});stage.querySelectorAll('.part').forEach(function(p){p.classList.remove('on')});
       [1,2,3].forEach(function(i){var an=document.getElementById('ann'+i);an.classList.remove('on');an.querySelector('.tt').textContent='M'+i+' · —';var mm=document.getElementById('m'+i);if(mm)mm.style.setProperty('--w','0%');var tr=document.getElementById('t'+i);tr.textContent='▹ M'+i+' · —';tr.classList.remove('set');document.getElementById('g'+i).style.width=i===1?'8%':'0%';document.getElementById('g'+i+'v').textContent='—';});
@@ -725,6 +837,22 @@
       var dept=document.getElementById('stDept');if(dept)dept.textContent='—';document.getElementById('assign').scrollIntoView({behavior:reduce?'auto':'smooth'});});
   })();
 
+
+  // ---- Routes ----
+  (function(){
+    var A=document.getElementById('routeA'),B=document.getElementById('routeB');if(!A)return;
+    function welcome(line,then){var w=document.getElementById('welcome');document.getElementById('wId').textContent=document.getElementById('stId').textContent;
+      w.querySelector('.w3').textContent=line;w.hidden=false;document.body.style.overflow='hidden';void w.offsetWidth;w.classList.add('on');
+      setTimeout(then,reduce?100:3600);
+      setTimeout(function(){w.classList.add('out');setTimeout(function(){w.hidden=true;w.classList.remove('on','out');if(document.getElementById('orientWrap').hidden)document.body.style.overflow='';},900);},reduce?200:4400);}
+    A.addEventListener('click',function(){welcome('請依程序入職。',function(){document.getElementById('orientWrap').hidden=false;document.body.style.overflow='hidden';window.scrollTo(0,0);
+      var ms=document.querySelectorAll('.memo1');ms.forEach(function(m,i){setTimeout(function(){m.classList.add('on')},reduce?0:900+i*1100)});});
+    document.getElementById('ackBtn').addEventListener('click',function(){document.getElementById('orientWrap').hidden=true;document.body.style.overflow='';document.getElementById('assign').hidden=false;document.getElementById('assign').scrollIntoView({behavior:'auto'});});});
+    B.addEventListener('click',function(){welcome('配發清單開放檢視。',function(){try{localStorage.setItem('corp_id',document.getElementById('stId').textContent);localStorage.removeItem('corp_div');}catch(e){}location.href='cortex.html?via=b';});});
+    document.querySelectorAll('#dtabs button').forEach(function(b){b.addEventListener('click',function(){if(window.openFloor)window.openFloor(b.getAttribute('data-k'),true);});});
+  })();
+
+  document.getElementById('navOri').addEventListener('click',function(e){e.preventDefault();document.getElementById('orientWrap').hidden=false;document.body.style.overflow='hidden';document.querySelectorAll('.memo1').forEach(function(m){m.classList.add('on')});});
   // top bar solid on scroll
   var top=document.getElementById('top');
   function onS(){top.classList.toggle('solid',window.scrollY>40)}onS();window.addEventListener('scroll',onS,{passive:true});
