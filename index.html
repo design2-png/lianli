@@ -518,32 +518,12 @@
   .top .re:hover{color:var(--text)}
 
   @media (prefers-reduced-motion:reduce){.dot,.cur{animation:none}.div .bg img{transition:none}}
-  /* intro film */
-  #intro{position:fixed;inset:0;z-index:200;background:#000;display:flex;align-items:center;justify-content:center;transition:opacity .7s ease}
-  #intro[hidden]{display:none}
-  #intro.out{opacity:0;pointer-events:none}
-  #intro video{width:100%;height:100%;object-fit:contain;background:#000}
-  #intro .ib{position:absolute;bottom:calc(22px + env(safe-area-inset-bottom,0px));background:none;border:0;padding:8px 4px;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:color .2s}
-  #intro .ib:hover,#intro .ib:focus-visible{color:var(--text);outline:none}
-  #introSound{left:var(--gut,24px)}
-  #introSkip{right:var(--gut,24px)}
-  #introBar{position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--text);opacity:.5}
-  #introStart{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35)}
-  #introStart[hidden]{display:none}
-  #introStart button{background:none;border:0;color:var(--text);font-family:var(--mono);font-size:13px;letter-spacing:.28em;cursor:pointer;padding:16px}
 </style>
 </head>
 <body>
 
 <div class="grain" aria-hidden="true"></div>
 
-<div id="intro" hidden aria-label="THE CORP 入職宣導片">
-  <video id="introVid" poster="media/intro-poster.jpg" playsinline muted preload="auto"><source src="media/intro.mp4" type="video/mp4"><source src="media/intro.webm" type="video/webm"></video>
-  <div id="introStart" hidden><button type="button" id="introPlay">▶ 播放入職宣導片</button></div>
-  <button type="button" class="ib" id="introSound">聲音 · Sound off</button>
-  <button type="button" class="ib" id="introSkip">略過 · Skip ▸</button>
-  <div id="introBar"></div>
-</div>
 <div id="issue" role="status" aria-live="polite">
   <div class="corr" aria-hidden="true">
     <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
@@ -583,7 +563,7 @@
 <header class="top" id="top">
   <div class="brand"><span class="bar" style="width:4.5em"></span><span>THE CORP</span></div>
   <nav aria-label="部門">
-    <a href="#" id="navFilm">Film</a><a href="#" id="navOri">Orientation</a><a href="#assign" id="navCfg">Configuration</a><a href="cortex.html">Divisions</a>
+    <a href="#" id="navOri">Orientation</a><a href="#assign" id="navCfg">Configuration</a><a href="cortex.html">Divisions</a>
   </nav>
   <div class="id"><span class="dot" aria-hidden="true"></span><span>員編 <b id="stId" class="num">—</b></span><span>RECRUIT</span><span>部門 <b id="stDept">—</b></span><button class="re" id="reissue">重新核發</button></div>
 </header>
@@ -794,32 +774,7 @@
   function enter(){issue.hidden=true;document.body.style.overflow='';heroLines.forEach(function(l){l.classList.add('on')});}
   document.getElementById('reissue').addEventListener('click',runIssuance);
 
-  // ---- intro film → then issuance ----
-  function playIntro(done,force){
-    var wrap=document.getElementById('intro'),v=document.getElementById('introVid');
-    var seen=false;try{seen=sessionStorage.getItem('corp_intro')==='1'}catch(e){}
-    if(!wrap||!v||(!force&&(seen||reduce))){done();return;}
-    var snd=document.getElementById('introSound'),skip=document.getElementById('introSkip'),bar=document.getElementById('introBar'),st=document.getElementById('introStart');
-    var finished=false;
-    function label(){snd.textContent=v.muted?'聲音 · Sound off':'聲音 · Sound on';}
-    function finish(){if(finished)return;finished=true;try{sessionStorage.setItem('corp_intro','1')}catch(e){}
-      v.pause();wrap.classList.add('out');document.removeEventListener('keydown',onKey);
-      setTimeout(function(){wrap.hidden=true;wrap.classList.remove('out');},750);done();}
-    function onKey(e){if(e.key==='Escape')finish();}
-    wrap.hidden=false;st.hidden=true;document.body.style.overflow='hidden';
-    try{v.currentTime=0}catch(e){}
-    v.onended=finish;var srcs=v.querySelectorAll('source');if(srcs.length)srcs[srcs.length-1].onerror=finish;
-    v.ontimeupdate=function(){if(v.duration)bar.style.width=(v.currentTime/v.duration*100)+'%';};
-    skip.onclick=finish;
-    snd.onclick=function(){v.muted=!v.muted;label();};
-    document.getElementById('introPlay').onclick=function(){st.hidden=true;v.muted=false;label();v.play().catch(finish);};
-    document.addEventListener('keydown',onKey);
-    label();
-    var p=v.play();if(p&&p.catch)p.catch(function(){st.hidden=false;});
-  }
-  playIntro(runIssuance);
-  var nf=document.getElementById('navFilm');
-  if(nf)nf.addEventListener('click',function(e){e.preventDefault();playIntro(function(){document.body.style.overflow='';},true);});
+  runIssuance();
 
 
   // ---- Memorandum clock ----
