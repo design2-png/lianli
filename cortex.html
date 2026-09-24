@@ -622,8 +622,8 @@
   .fintro p{font-size:13px}
   .fhead .fmeta{display:none}
   .fhead h2{font-size:56px}
-  .equip{max-height:78svh;display:grid;grid-template-rows:auto 1fr auto}
-  .equip .ev{aspect-ratio:auto;min-height:0}
+  .equip{height:78vh;height:78svh;max-height:78svh;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+  .equip .ev{aspect-ratio:auto;min-height:260px;height:100%}
   .equip .ef{padding:10px 14px 12px}
   .stat{grid-template-columns:1fr 44px 20px}
 }
@@ -696,7 +696,7 @@
   <div class="ef">
     <div class="eb"><i id="eqBar"></i></div>
     <p class="el" id="eqLine">讀取設備檔案…</p>
-    <p class="hint">拖曳旋轉 · 滾輪縮放</p>
+    <p class="hint">拖曳旋轉 · 滾輪／雙指縮放</p>
   </div>
 </aside>
 <script src="img/corp-viewer.js"></script>

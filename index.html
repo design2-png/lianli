@@ -538,7 +538,7 @@
 <div class="grain" aria-hidden="true"></div>
 
 <div id="intro" hidden aria-label="THE CORP 入職宣導片">
-  <video id="introVid" src="media/intro.mp4" poster="media/intro-poster.jpg" playsinline muted preload="auto"></video>
+  <video id="introVid" poster="media/intro-poster.jpg" playsinline muted preload="auto"><source src="media/intro.mp4" type="video/mp4"><source src="media/intro.webm" type="video/webm"></video>
   <div id="introStart" hidden><button type="button" id="introPlay">▶ 播放入職宣導片</button></div>
   <button type="button" class="ib" id="introSound">聲音 · Sound off</button>
   <button type="button" class="ib" id="introSkip">略過 · Skip ▸</button>
@@ -808,7 +808,7 @@
     function onKey(e){if(e.key==='Escape')finish();}
     wrap.hidden=false;st.hidden=true;document.body.style.overflow='hidden';
     try{v.currentTime=0}catch(e){}
-    v.onended=finish;v.onerror=finish;
+    v.onended=finish;var srcs=v.querySelectorAll('source');if(srcs.length)srcs[srcs.length-1].onerror=finish;
     v.ontimeupdate=function(){if(v.duration)bar.style.width=(v.currentTime/v.duration*100)+'%';};
     skip.onclick=finish;
     snd.onclick=function(){v.muted=!v.muted;label();};
