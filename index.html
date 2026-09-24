@@ -520,8 +520,8 @@
   @media (prefers-reduced-motion:reduce){.dot,.cur{animation:none}.div .bg img{transition:none}}
   @media (max-width:1000px){
     .cfgGrid{grid-template-columns:1fr;gap:14px}
-    .stage{order:-1;position:sticky;top:calc(48px + env(safe-area-inset-top,0px));z-index:5;min-height:0;height:38svh;max-height:360px;border-radius:0 0 12px 12px;box-shadow:0 20px 40px rgba(0,0,0,.6)}
-    .stage .figwrap{height:calc(100% - 24px);max-height:none}
+    .stage{order:-1;position:sticky;top:calc(48px + env(safe-area-inset-top,0px));z-index:5;min-height:0;height:42svh;max-height:380px;border-radius:0 0 12px 12px;box-shadow:0 20px 40px rgba(0,0,0,.6)}
+    .stage .figwrap{height:calc(min(42svh,380px) - 16px);width:auto;max-width:100%;max-height:none;aspect-ratio:2/3;margin:0 auto}
     .stage .meters,.stage .reticle{display:none}
     .stage .ann .tt{font-size:26px}.stage .ann .ts{font-size:18px}
     .slots{gap:10px}
@@ -529,6 +529,12 @@
     .asg .chead{position:relative}
     .asg,.asg .wrap,.cfgGrid{overflow:visible}
   }
+  @media (max-width:760px){.hero .inner .en,.hero .inner .sub{display:none}}
+  .cfgIntro{margin:28px 0 8px}
+  .cfgIntro .ck{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--signal);margin:0 0 14px}
+  .cfgIntro h2{font-family:var(--tc,inherit);font-weight:500;font-size:clamp(26px,3.4vw,44px);line-height:1.3;letter-spacing:.06em;color:var(--text);margin:0 0 12px}
+  .cfgIntro .cs{font-size:14px;letter-spacing:.06em;color:var(--muted);margin:0;max-width:40em;line-height:1.7}
+  @media (max-width:760px){.cfgIntro{margin:20px 0 4px}.cfgIntro .cs{font-size:13px}}
 </style>
 </head>
 <body>
@@ -631,6 +637,11 @@
 <section class="asg cfg" id="assign" hidden aria-label="人員配置">
   <div class="wrap wide">
     <div class="chead"><span>CFG_001 · 人員配置 · Exoskeleton loadout</span><span class="fill"></span><span class="steps" id="steps"><span class="on">M1</span><span>M2</span><span>M3</span><span>核定</span></span></div>
+    <div class="cfgIntro">
+      <p class="ck">Step 02 · Exoskeleton loadout</p>
+      <h2>請依作業需求，<br>配置你的外骨骼裝備。</h2>
+      <p class="cs">共三項模組，請依序選擇最符合你日常作業的選項。</p>
+    </div>
     <p class="note" id="asgNote">部門由公司依配置核定。請逐項裝載模組。</p>
 
     <div class="cfgGrid">
