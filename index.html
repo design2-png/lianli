@@ -518,6 +518,17 @@
   .top .re:hover{color:var(--text)}
 
   @media (prefers-reduced-motion:reduce){.dot,.cur{animation:none}.div .bg img{transition:none}}
+  @media (max-width:1000px){
+    .cfgGrid{grid-template-columns:1fr;gap:14px}
+    .stage{order:-1;position:sticky;top:calc(48px + env(safe-area-inset-top,0px));z-index:5;min-height:0;height:38svh;max-height:360px;border-radius:0 0 12px 12px;box-shadow:0 20px 40px rgba(0,0,0,.6)}
+    .stage .figwrap{height:calc(100% - 24px);max-height:none}
+    .stage .meters,.stage .reticle{display:none}
+    .stage .ann .tt{font-size:26px}.stage .ann .ts{font-size:18px}
+    .slots{gap:10px}
+    .slot{padding:12px 14px}
+    .asg .chead{position:relative}
+    .asg,.asg .wrap,.cfgGrid{overflow:visible}
+  }
 </style>
 </head>
 <body>
@@ -805,7 +816,7 @@
       if(q==='1'){document.getElementById('g1').style.width=g1[v][0];document.getElementById('g1v').textContent=g1[v][1];}
       if(q==='2'){document.getElementById('g2').style.width=g2[v][0];document.getElementById('g2v').textContent=g2[v][1];}
       if(q==='3'){document.getElementById('g3').style.width=g3[v][0];document.getElementById('g3v').textContent=g3[v][1];}
-      setTimeout(function(){if(ans['1']&&ans['2']&&ans['3'])finish();else setSlot(+q+1);},reduce?0:300);
+      setTimeout(function(){if(ans['1']&&ans['2']&&ans['3'])finish();else{setSlot(+q+1);if(window.innerWidth<=1000){var nx=document.querySelector('.slot.on');if(nx)nx.scrollIntoView({behavior:reduce?'auto':'smooth',block:'nearest'});}}},reduce?0:300);
     })});
     function score(){var sc={cortex:0,enforcer:0,puffie:0};sc[ans['2']]+=2;if(ans['1']==='long')sc.cortex+=1;if(ans['1']==='mid')sc.enforcer+=1;if(ans['1']==='short')sc.puffie+=1;
       return Object.keys(sc).sort(function(a,b){return sc[b]-sc[a]})[0];}
@@ -848,7 +859,7 @@
       setTimeout(function(){w.classList.add('out');setTimeout(function(){w.hidden=true;w.classList.remove('on','out');if(document.getElementById('orientWrap').hidden)document.body.style.overflow='';},900);},reduce?200:4400);}
     A.addEventListener('click',function(){welcome('請依程序入職。',function(){document.getElementById('orientWrap').hidden=false;document.body.style.overflow='hidden';window.scrollTo(0,0);
       var ms=document.querySelectorAll('.memo1');ms.forEach(function(m,i){setTimeout(function(){m.classList.add('on')},reduce?0:900+i*1100)});});
-    document.getElementById('ackBtn').addEventListener('click',function(){document.getElementById('orientWrap').hidden=true;document.body.style.overflow='';document.getElementById('assign').hidden=false;document.getElementById('assign').scrollIntoView({behavior:'auto'});});});
+    document.getElementById('ackBtn').addEventListener('click',function(){document.getElementById('orientWrap').hidden=true;document.body.style.overflow='';document.getElementById('assign').hidden=false;document.getElementById('assign').scrollIntoView({behavior:'auto'});window.scrollBy(0,-56);});});
     B.addEventListener('click',function(){welcome('配發清單開放檢視。',function(){try{localStorage.setItem('corp_id',document.getElementById('stId').textContent);localStorage.removeItem('corp_div');}catch(e){}location.href='cortex.html?via=b';});});
     document.querySelectorAll('#dtabs button').forEach(function(b){b.addEventListener('click',function(){if(window.openFloor)window.openFloor(b.getAttribute('data-k'),true);});});
   })();

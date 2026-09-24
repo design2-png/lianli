@@ -521,9 +521,10 @@
 </style>
 <style>.floor{border-bottom:0;min-height:100svh}.floor[hidden]{display:grid}.top{background:rgba(10,10,12,.92);border-bottom:1px solid var(--line)}.dtabs{display:flex}.dtabs a{padding:8px 14px;border:1px solid rgba(242,240,235,.25);color:var(--muted);text-decoration:none}.dtabs a[aria-current]{border-color:var(--text);color:var(--text)}</style>
 <style>
-.fintro{position:relative;z-index:1;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:end;padding:8px 0 40px;border-bottom:1px solid rgba(242,240,235,.14);margin-bottom:28px}
-.fintro h3{font-family:var(--tc);font-weight:300;font-size:clamp(20px,2.2vw,28px);letter-spacing:.08em;margin:0 0 12px;color:var(--text)}
-.fintro p{margin:0;color:var(--muted);max-width:46ch;font-size:14px;line-height:1.9}
+.fintro{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:40px;align-items:end;padding:8px 0 40px;border-bottom:1px solid rgba(242,240,235,.14);margin-bottom:28px}
+.fintro h3{font-family:var(--tc);font-weight:300;font-size:clamp(22px,2.6vw,34px);letter-spacing:.08em;margin:0 0 12px;color:var(--text)}
+.fintro .guide1{font-family:var(--tc);font-size:13px;letter-spacing:.08em;color:var(--muted);margin:0 0 10px;white-space:nowrap}.fintro .guide1 b{font-family:var(--mono);font-weight:500;color:var(--text)}
+.fintro p{margin:0;color:var(--muted);max-width:60ch;font-size:14px;line-height:1.9}
 .fspec{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 24px;font-family:var(--mono)}
 .fspec div{border-top:1px solid rgba(242,240,235,.2);padding-top:8px}
 .fspec span{display:block;font-size:9px;letter-spacing:.18em;color:var(--dim)}
@@ -533,6 +534,104 @@
 .up button{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:8px 12px;border:1px solid rgba(242,240,235,.3);color:var(--text)}
 .up button:hover{border-color:var(--text);background:rgba(242,240,235,.08)}
 .upNote{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--signal);margin:8px 0 0;min-height:1.2em}
+</style>
+<style>
+/* store-style cards v3 — glass + chamfer */
+.bays{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));max-width:920px;gap:12px;align-self:start;margin-top:0}
+.bayhead{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:baseline;margin:0 0 14px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.bayhead b{color:var(--text);font-weight:500}
+.bayhead .filters{display:flex;gap:6px}
+.bayhead .filters span{padding:5px 10px;border:1px solid rgba(242,240,235,.18);border-radius:999px;color:var(--dim)}
+.bayhead .filters span.on{background:var(--text);color:var(--ink);border-color:var(--text)}
+.bay{position:relative;min-width:0;border:1px solid rgba(242,240,235,.16);border-radius:12px;background:rgba(242,240,235,.045);backdrop-filter:blur(14px) saturate(1.1);-webkit-backdrop-filter:blur(14px) saturate(1.1);overflow:hidden;display:grid;grid-template-rows:auto auto;transition:border-color .2s,transform .3s,background .2s;
+  -webkit-mask:linear-gradient(135deg,transparent 11px,#000 11.6px);mask:linear-gradient(135deg,transparent 11px,#000 11.6px)}
+.bay::before{content:"";position:absolute;left:-1px;top:-1px;width:18px;height:18px;background:linear-gradient(135deg,transparent calc(50% - .6px),rgba(242,240,235,.5) calc(50% - .6px),rgba(242,240,235,.5) calc(50% + .6px),transparent calc(50% + .6px));pointer-events:none}
+.bay.open{border-color:rgba(242,240,235,.55);background:rgba(242,240,235,.07)}
+.bay.open:hover{border-color:var(--text);background:rgba(242,240,235,.1);transform:translateY(-2px)}
+.bay>*{min-width:0;max-width:100%;box-sizing:border-box}
+.bimg{width:100%;aspect-ratio:4/4.4;background:transparent;border-bottom:0;margin:0;border-radius:0;display:block;overflow:visible}
+.bimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 60%;padding:12% 6% 2%;box-sizing:border-box;filter:saturate(.8) drop-shadow(0 16px 22px rgba(0,0,0,.8))}
+.bay.open:hover .bimg img{transform:scale(1.05)}
+.bimg .ck,.bimg .tier{display:none}
+.bimg .mark{position:absolute;top:10px;right:12px;width:16px;height:16px;border:0;font-size:11px;color:var(--muted)}
+.bay.locked .bimg::before{display:none}
+.bay.locked .bimg img{filter:saturate(0) brightness(.22) blur(2px);opacity:.8}
+.bimg .deny{position:absolute;left:16px;right:auto;top:12px;bottom:auto;padding:4px 8px;background:rgba(232,71,42,.12);border:1px solid rgba(232,71,42,.5);border-radius:4px;display:grid;gap:0}
+.bimg .deny span{font-size:8px;letter-spacing:.16em}.bimg .deny small{display:none}
+.binfo{width:100%;padding:8px 14px 12px;gap:2px;position:relative;z-index:2}
+.brow{grid-template-columns:1fr;gap:2px;font-size:12px}
+.brow .mono{display:none}
+.brow .code{font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.01em;color:var(--text)}
+.brow.cl b{font-family:var(--mono);font-size:8px;letter-spacing:.14em;color:var(--dim);font-weight:400;text-transform:uppercase}
+.brow.pr{display:flex;justify-content:space-between;align-items:center;margin-top:4px;gap:8px}
+.brow.pr b{font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--text)}
+.brow.pr .dots{margin-left:auto;order:2;display:flex;gap:3px}
+.brow.pr .dots i{width:5px;height:5px;border-radius:50%;background:rgba(242,240,235,.35)}
+.brow.pr .add{order:3;position:relative;z-index:3;width:28px;height:28px;margin-top:-22px;border-radius:50%;background:var(--text);color:var(--ink);display:grid;place-items:center;font-size:16px;line-height:1;box-shadow:0 4px 12px rgba(0,0,0,.6)}
+.bay.locked .brow.pr .add{background:rgba(242,240,235,.08);color:var(--dim);border:1px solid rgba(242,240,235,.15);box-shadow:none}
+.bst{margin-top:6px;padding-top:8px;font-size:8px;border-top:1px solid rgba(242,240,235,.1);white-space:normal}
+.up{margin-top:8px}
+.up button{padding:6px 10px;font-size:8px}
+</style>
+
+
+<style>
+.equip{position:fixed;top:calc(64px + env(safe-area-inset-top,0px));right:20px;width:min(360px,calc(100vw - 40px));z-index:45;background:rgba(12,12,15,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(242,240,235,.25);border-radius:14px;overflow:hidden;font-family:var(--mono);box-shadow:0 30px 70px rgba(0,0,0,.7);transform:translateX(24px);opacity:0;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .35s}
+.equip.on{transform:none;opacity:1}
+.equip[hidden]{display:none}
+.equip .eh{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(242,240,235,.12)}
+.equip .eh .mono{font-size:9px;letter-spacing:.2em;color:var(--signal)}
+.equip .ex{font-size:18px;color:var(--muted);line-height:1}
+.equip .ev{position:relative;aspect-ratio:1/1.05;background:radial-gradient(ellipse at 50% 55%,rgba(40,40,46,.9),rgba(8,8,10,1) 72%);overflow:hidden}
+.equip .ring{position:absolute;left:50%;width:46%;height:7%;transform:translateX(-50%);border-radius:50%;border:2px solid rgba(242,240,235,.85);box-shadow:0 0 14px rgba(242,240,235,.5),inset 0 0 8px rgba(242,240,235,.35);z-index:2;pointer-events:none}
+.equip .ring.t{top:7%}.equip .ring.b{bottom:9%}
+.equip .fallback{position:absolute;inset:12% 10%;display:grid;place-items:center;perspective:900px}
+.equip .fallback img{max-height:100%;max-width:100%;object-fit:contain;filter:saturate(.8) drop-shadow(0 20px 26px rgba(0,0,0,.8));animation:eqsway 9s ease-in-out infinite alternate}
+@keyframes eqsway{from{transform:rotateY(-30deg)}to{transform:rotateY(30deg)}}
+.equip .scan{position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,rgba(242,240,235,.9),transparent);opacity:0;z-index:3;pointer-events:none}
+.equip.scanning .scan{animation:eqscan 1.2s steps(24) 1}
+@keyframes eqscan{from{top:0;opacity:1}to{top:100%;opacity:1}}
+.equip .evhud{position:absolute;left:12px;right:12px;bottom:10px;display:flex;justify-content:space-between;font-size:9px;letter-spacing:.16em;color:var(--muted);z-index:3;pointer-events:none}
+.equip .evhud span:first-child{color:var(--text)}
+.equip .ef{padding:12px 14px 14px;display:grid;gap:8px}
+.equip .eb{height:4px;background:rgba(242,240,235,.12);position:relative}
+.equip .eb i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--text);transition:width .4s steps(8)}
+.equip .el{font-family:var(--tc);font-size:12px;letter-spacing:.08em;color:var(--text);margin:0;min-height:1.4em}
+.equip .hint{font-size:8px;letter-spacing:.16em;color:var(--dim);margin:0;text-transform:uppercase}
+.bay.eq{border-color:var(--text);box-shadow:0 0 0 1px rgba(242,240,235,.4)}
+@media (max-width:760px){.equip{top:auto;bottom:0;right:0;left:0;width:100%;border-radius:14px 14px 0 0}}
+@media (prefers-reduced-motion:reduce){.equip .fallback img,.equip.scanning .scan{animation:none}}
+</style>
+<style>
+.stats{display:grid;gap:5px;margin:8px 0 6px;font-family:var(--mono)}
+.stat{display:grid;grid-template-columns:1fr 60px 22px;gap:8px;align-items:center;font-size:8px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
+.stat i{display:block;height:4px;background:rgba(242,240,235,.12);position:relative;overflow:hidden}
+.stat b{position:absolute;left:0;top:0;bottom:0;background:var(--text);width:0;transition:width .8s steps(10)}
+.stat em{font-style:normal;color:var(--text);text-align:right;font-size:9px}
+.bay.locked .stat b{background:rgba(242,240,235,.3)}.bay.locked .stat em{color:var(--muted)}
+.traits{list-style:none;margin:0 0 4px;padding:0;display:grid;gap:3px;font-family:var(--tc);font-size:10px;color:var(--muted)}
+.traits li::before{content:"·";margin-right:6px;color:var(--signal)}
+.bay.locked .traits{filter:blur(2px);opacity:.5}
+.bay.locked .traits li{color:var(--dim)}
+</style>
+<style>
+@media (max-width:760px){
+  .bays{grid-template-columns:1fr 1fr;gap:10px;max-width:none}
+  .bay .brow .code{font-size:12px}
+  .fintro .guide1{white-space:normal}
+  .fintro p{font-size:13px}
+  .fhead .fmeta{display:none}
+  .fhead h2{font-size:56px}
+  #floorNo,#floorNote,.fintro .guide1,.fintro p:not(.guide1){display:none}
+  .fintro h3{font-size:18px;margin:0}
+  .fhead .fzh{font-size:12px}
+  .bayhead span:last-child{display:none}
+  .equip{height:78vh;height:78svh;max-height:78svh;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+  .equip .ev{aspect-ratio:auto;min-height:260px;height:100%}
+  .equip .ef{padding:10px 14px 12px}
+  .stat{grid-template-columns:1fr 44px 20px}
+}
+@media (max-width:420px){.bays{grid-template-columns:1fr}.bimg{aspect-ratio:4/3.2}.bimg img{padding:6% 14% 2%}}
 </style>
 </head>
 <body>
@@ -551,40 +650,59 @@
     <div class="fmeta mono"><span>Access · <b>RECRUIT</b></span><span>Fig. <b id="floorFig">03</b> · Division floor</span><span id="floorClock" class="num">--:--:--</span></div>
   </div>
   <div class="fintro">
-    <div><h3>本公司唯一對外販售的甜美。</h3><p>PUFFIE 由消費事業部負責，是本公司唯一對外販售的產品。其甜美程度與柔軟度，均經人事部核准。本系列亦為間歇作業人員之標準配置。</p></div>
-    <div class="fspec"><div><span>SOFTNESS</span><b>核准 · LV2</b></div><div><span>RADIUS</span><b>R24</b></div><div><span>SERVICE LIFE</span><b>5 年</b></div><div><span>CHASSIS</span><b>LIAN LI · AL</b></div></div>
+    <div><p class="guide1">員編 <b id="gId" class="num">—</b>，歡迎來到 PUFFIE 樓層。</p><h3>本公司唯一對外販售的甜美。</h3><p>PUFFIE 的甜美程度與柔軟度，均經人事部核准。依您的職級，本樓層開放一項設備供裝備。</p></div>
   </div>
+  <div class="bayhead"><span>配發設備 · <b>3</b></span><span>點選設備以裝備</span></div>
   <div class="bays">
     <article class="bay open" data-tier="R">
-      <div class="bimg"><img src="img/chair-a.png" alt="CORTEX R01" width="900" height="943"><i class="ck a"></i><i class="ck b"></i></div>
+      <div class="bimg"><span class="tier">RECRUIT</span><span class="mark">◇</span><img src="img/puffie-chair.png" alt="PUFFIE R01" width="900" height="1416"></div>
       <div class="binfo">
-        <div class="brow"><span class="mono">Model</span><b class="code" id="bayR">EXB-PUF-R01</b></div>
-        <div class="brow"><span class="mono">Clearance</span><b>RECRUIT · 試用期配置</b></div>
-        <div class="brow"><span class="mono">Standard</span><b class="num">NT$ —— </b></div>
+        <div class="brow"><b class="code">EXB-PUF-R01</b></div>
+        <div class="brow cl"><b>RECRUIT · 試用期配置</b></div><div class="stats"><div class="stat"><span>ERGONOMIC 人體工學</span><i><b style="width:78%"></b></i><em>78</em></div><div class="stat"><span>MOBILITY 機動性</span><i><b style="width:64%"></b></i><em>64</em></div><div class="stat"><span>ENDURANCE 續航</span><i><b style="width:70%"></b></i><em>70</em></div><div class="stat"><span>SILENCE 靜音</span><i><b style="width:80%"></b></i><em>80</em></div></div><ul class="traits"><li>柔軟度 · 核准 LV2</li><li>圓角 R24</li><li>服役年限 5 年</li></ul>
+        <div class="brow pr"><b class="num">NT$ ——</b><span class="add">+</span><span class="dots"><i></i><i></i></span></div>
         <div class="bst ok"><i></i>可申請 · 配發單準備中</div>
       </div>
     </article>
     <article class="bay locked" data-tier="O">
-      <div class="bimg"><img src="img/chair-b.png" alt="" width="900" height="1458"><div class="deny"><span>ACCESS DENIED</span><small>職級不足 · OPERATIVE</small></div><i class="ck a"></i><i class="ck b"></i></div>
+      <div class="bimg"><span class="tier">OPERATIVE</span><span class="mark">◇</span><img src="img/puffie-chair.png" alt="" width="900" height="1416"><div class="deny"><span>ACCESS DENIED</span><small>職級不足 · OPERATIVE</small></div></div>
       <div class="binfo">
-        <div class="brow"><span class="mono">Model</span><b class="code" id="bayO">EXB-PUF-O01</b></div>
-        <div class="brow"><span class="mono">Clearance</span><b>OPERATIVE · 執行層配置</b></div>
-        <div class="brow"><span class="mono">Standard</span><b><span class="rd" style="width:5em"></span></b></div>
+        <div class="brow"><b class="code">EXB-PUF-O01</b></div>
+        <div class="brow cl"><b>OPERATIVE · 執行層配置</b></div><div class="stats"><div class="stat"><span>ERGONOMIC 人體工學</span><i><b style="width:85%"></b></i><em>85</em></div><div class="stat"><span>MOBILITY 機動性</span><i><b style="width:70%"></b></i><em>70</em></div><div class="stat"><span>ENDURANCE 續航</span><i><b style="width:80%"></b></i><em>80</em></div><div class="stat"><span>SILENCE 靜音</span><i><b style="width:86%"></b></i><em>86</em></div></div><ul class="traits"><li>分段式靠背</li><li>4D 扶手</li><li>鋁合金基座 · LIAN LI</li></ul>
+        <div class="brow pr"><b class="num"><span class="rd" style="width:5em"></span></b><span class="add">·</span><span class="dots"><i></i></span></div>
         <div class="bst w"><i></i>完成入職後開放</div><div class="up"><button data-up="onboard">完成入職</button><button data-up="code">承包商通行碼</button></div><p class="upNote" data-note></p>
       </div>
     </article>
     <article class="bay locked" data-tier="D">
-      <div class="bimg"><img src="img/chair-c.png" alt="" width="900" height="1393"><div class="deny"><span>ACCESS DENIED</span><small>職級不足 · DIRECTOR</small></div><i class="ck a"></i><i class="ck b"></i></div>
+      <div class="bimg"><span class="tier">DIRECTOR</span><span class="mark">◇</span><img src="img/puffie-chair.png" alt="" width="900" height="1416"><div class="deny"><span>ACCESS DENIED</span><small>職級不足 · DIRECTOR</small></div></div>
       <div class="binfo">
-        <div class="brow"><span class="mono">Model</span><b class="code" id="bayD">EXB-PUF-D01</b></div>
-        <div class="brow"><span class="mono">Clearance</span><b>DIRECTOR · 決策層配置</b></div>
-        <div class="brow"><span class="mono">Standard</span><b><span class="rd" style="width:5em"></span></b></div>
+        <div class="brow"><b class="code">EXB-PUF-D01</b></div>
+        <div class="brow cl"><b>DIRECTOR · 決策層配置</b></div><div class="stats"><div class="stat"><span>ERGONOMIC 人體工學</span><i><b style="width:92%"></b></i><em>92</em></div><div class="stat"><span>MOBILITY 機動性</span><i><b style="width:76%"></b></i><em>76</em></div><div class="stat"><span>ENDURANCE 續航</span><i><b style="width:88%"></b></i><em>88</em></div><div class="stat"><span>SILENCE 靜音</span><i><b style="width:92%"></b></i><em>92</em></div></div><ul class="traits"><li>柔軟度 · 核准 LV3</li><li>限定配色</li><li>服役年限 7 年</li></ul>
+        <div class="brow pr"><b class="num"><span class="rd" style="width:5em"></span></b><span class="add">·</span><span class="dots"><i></i></span></div>
         <div class="bst w"><i></i>登記設備序號後開放</div><div class="up"><button data-up="serial">登記設備序號</button></div><p class="upNote" data-note></p>
       </div>
     </article>
   </div>
   <div class="ffoot mono"><span>Issued equipment · Not for resale</span><span>Parts by Lian Li · Exoskeleton by Exobone · Issued by THE CORP</span></div>
 </section>
+
+
+<!-- EQUIP PANEL -->
+<aside class="equip" id="equip" hidden aria-label="裝備中">
+  <div class="eh"><span class="mono">EQUIP · 裝備中</span><button class="ex" id="eqClose" aria-label="關閉">×</button></div>
+  <div class="ev" id="ev">
+    <div class="ring t"></div>
+    <div id="mv" style="position:absolute;inset:0;display:none"></div>
+    <div class="fallback" id="evfb"><img id="eqImg" src="img/puffie-chair.png" alt=""></div>
+    <div class="ring b"></div>
+    <div class="scan"></div>
+    <div class="evhud"><span id="eqName">EXB-PUF-R01</span><span id="eqStep">LOADING</span></div>
+  </div>
+  <div class="ef">
+    <div class="eb"><i id="eqBar"></i></div>
+    <p class="el" id="eqLine">讀取設備檔案…</p>
+    <p class="hint">設備檔案 · 配發影像</p>
+  </div>
+</aside>
 
 <footer class="foot">
   <span>THE CORP · 內部系統 · 本頁不對外索引</span>
@@ -607,6 +725,35 @@
 <script>
 document.querySelectorAll('[data-up]').forEach(function(b){b.addEventListener('click',function(){var n=b.closest('.binfo').querySelector('[data-note]');
   var m={onboard:'入職申請將於正式系統開放 · 人事部',code:'承包商通行碼驗證將於正式系統開放',serial:'設備序號登記將於正式系統開放 · 維修間'}[b.getAttribute('data-up')];n.textContent='● '+m;});});
+</script>
+<script>
+(function(){
+  var eq=document.getElementById('equip'),mvEl=document.getElementById('mv'),fb=document.getElementById('evfb');
+  var viewer=null,loaded=null;
+  var GLB_URL='img/ec40.glb', GLB_B64='img/ec40.b64.txt';
+  var models={'EXB-PUF-R01':{glb:false,img:'img/puffie-chair.png'},'EXB-PUF-O01':{glb:false,img:'img/puffie-chair.png'},'EXB-PUF-D01':{glb:false,img:'img/puffie-chair.png'}};
+  var steps=[[0,'讀取設備檔案…',12],[500,'驗證職級 · RECRUIT',38],[1000,'載入機構模型',66],[1600,'校準 · ±0.10 mm',88],[2200,'裝備完成。',100]];
+  var timers=[];
+  function ensureViewer(){if(viewer)return viewer;try{viewer=CorpViewer(mvEl,{exposure:1.05});}catch(e){viewer=null;}return viewer;}
+  function loadModel(){if(loaded)return loaded;var v=ensureViewer();if(!v)return Promise.reject('no-webgl');
+    loaded=(window.__USE_B64?v.loadBase64Url(GLB_B64):v.loadUrl(GLB_URL)).catch(function(){return v.loadBase64Url(GLB_B64);});return loaded;}
+  function open(card){var code=card.querySelector('.code').textContent;var m=models[code]||{};
+    document.querySelectorAll('.bay').forEach(function(b){b.classList.remove('eq')});card.classList.add('eq');
+    document.getElementById('eqName').textContent=code;
+    eq.hidden=false;void eq.offsetWidth;eq.classList.add('on','scanning');setTimeout(function(){eq.classList.remove('scanning')},1300);
+    timers.forEach(clearTimeout);timers=[];var bar=document.getElementById('eqBar'),line=document.getElementById('eqLine'),st=document.getElementById('eqStep');
+    steps.forEach(function(s){timers.push(setTimeout(function(){bar.style.width=s[2]+'%';line.textContent=s[1];st.textContent=s[2]<100?'LOADING '+s[2]+'%':'EQUIPPED';},s[0]));});
+    if(m.glb&&ensureViewer()){mvEl.style.display='block';fb.style.display='none';loadModel().catch(function(){mvEl.style.display='none';fb.style.display='grid';document.getElementById('eqImg').src=m.img;});}
+    else{mvEl.style.display='none';fb.style.display='grid';document.getElementById('eqImg').src=m.img||'img/puffie-chair.png';}
+  }
+  document.querySelectorAll('.bay.open').forEach(function(c){c.addEventListener('click',function(e){if(e.target.closest('[data-up]'))return;open(c);});});
+  document.getElementById('eqClose').addEventListener('click',function(){eq.classList.remove('on');setTimeout(function(){eq.hidden=true},350);document.querySelectorAll('.bay').forEach(function(b){b.classList.remove('eq')});});
+})();
+</script>
+<script>
+(function(){var id='—';try{id=localStorage.getItem('corp_id')||'—'}catch(e){}var g=document.getElementById('gId');if(g)g.textContent=id;
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.querySelectorAll('.stat b').forEach(function(b){var w=b.style.width;b.style.width='0';setTimeout(function(){b.style.width=w},50)});io.unobserve(e.target);}})},{threshold:.3});
+document.querySelectorAll('.bay').forEach(function(b){io.observe(b)});})();
 </script>
 </body>
 </html>
