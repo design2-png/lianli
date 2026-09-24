@@ -90,7 +90,7 @@
   .div .models span b{color:var(--text);font-weight:500}
   .div .lock{color:var(--dim)}
   .div .fig{position:absolute;top:28px;right:var(--gut);font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(242,240,235,.6)}
-  .div.comfort .n{color:#F2C4D6}
+  .div.puffie .n{color:#F2C4D6}
   @media (max-width:760px){.div .inner{grid-template-columns:1fr}.div .models{text-align:left}}
 
   /* identity */
@@ -518,12 +518,32 @@
   .top .re:hover{color:var(--text)}
 
   @media (prefers-reduced-motion:reduce){.dot,.cur{animation:none}.div .bg img{transition:none}}
+  /* intro film */
+  #intro{position:fixed;inset:0;z-index:200;background:#000;display:flex;align-items:center;justify-content:center;transition:opacity .7s ease}
+  #intro[hidden]{display:none}
+  #intro.out{opacity:0;pointer-events:none}
+  #intro video{width:100%;height:100%;object-fit:contain;background:#000}
+  #intro .ib{position:absolute;bottom:calc(22px + env(safe-area-inset-bottom,0px));background:none;border:0;padding:8px 4px;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:color .2s}
+  #intro .ib:hover,#intro .ib:focus-visible{color:var(--text);outline:none}
+  #introSound{left:var(--gut,24px)}
+  #introSkip{right:var(--gut,24px)}
+  #introBar{position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--text);opacity:.5}
+  #introStart{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35)}
+  #introStart[hidden]{display:none}
+  #introStart button{background:none;border:0;color:var(--text);font-family:var(--mono);font-size:13px;letter-spacing:.28em;cursor:pointer;padding:16px}
 </style>
 </head>
 <body>
 
 <div class="grain" aria-hidden="true"></div>
 
+<div id="intro" hidden aria-label="THE CORP 入職宣導片">
+  <video id="introVid" src="media/intro.mp4" poster="media/intro-poster.jpg" playsinline muted preload="auto"></video>
+  <div id="introStart" hidden><button type="button" id="introPlay">▶ 播放入職宣導片</button></div>
+  <button type="button" class="ib" id="introSound">聲音 · Sound off</button>
+  <button type="button" class="ib" id="introSkip">略過 · Skip ▸</button>
+  <div id="introBar"></div>
+</div>
 <div id="issue" role="status" aria-live="polite">
   <div class="corr" aria-hidden="true">
     <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
@@ -548,12 +568,12 @@
       <div class="ln"><span class="t">00:02.30</span><span class="g">● 已登記。持有即視為在職。</span></div>
     </div>
   </div>
-  <div class="iss-foot"><span>ISSUED, NOT SOLD.</span><span>CHASSIS BY LIAN LI · HUMAN HARDWARE BY EXOBONE</span></div>
+  <div class="iss-foot"><span>ISSUED, NOT SOLD.</span><span>PARTS BY LIAN LI · EXOSKELETON BY EXOBONE · ISSUED BY THE CORP</span></div>
 </div>
 
 <div id="welcome" hidden aria-live="polite">
   <div class="wtxt">
-    <p class="w1">Welcome to the Corp.</p>
+    <p class="w1">歡迎正式進入本企業。</p>
     <p class="w2">員編 <span id="wId" class="num">—</span> · 臨時通行</p>
     <p class="w3">配發清單開放檢視。</p>
   </div>
@@ -563,7 +583,7 @@
 <header class="top" id="top">
   <div class="brand"><span class="bar" style="width:4.5em"></span><span>THE CORP</span></div>
   <nav aria-label="部門">
-    <a href="#" id="navOri">Orientation</a><a href="#assign" id="navCfg">Configuration</a><a href="cortex.html">Divisions</a>
+    <a href="#" id="navFilm">Film</a><a href="#" id="navOri">Orientation</a><a href="#assign" id="navCfg">Configuration</a><a href="cortex.html">Divisions</a>
   </nav>
   <div class="id"><span class="dot" aria-hidden="true"></span><span>員編 <b id="stId" class="num">—</b></span><span>RECRUIT</span><span>部門 <b id="stDept">—</b></span><button class="re" id="reissue">重新核發</button></div>
 </header>
@@ -581,7 +601,7 @@
     <div class="ln"><span class="g">● 已登記。持有即表示已入職。</span></div>
   </div>
   <div class="hud tr" aria-hidden="true">Entry · Ground level<br>Fig. 00 · File EXB-ENV-ENT<br><span class="num" id="clock">--:--:--</span></div>
-  <div class="hud br" aria-hidden="true">Chassis by Lian Li<br>Human hardware by Exobone</div>
+  <div class="hud br" aria-hidden="true">Parts by Lian Li<br>Exoskeleton by Exobone</div>
   <div class="inner">
     <p class="en">Issued, not sold.</p>
     <p class="sub">本系統內之設備皆為公司配發。請選擇通道。</p>
@@ -639,8 +659,8 @@
           <p class="st">主要作業型態</p>
           <div class="ops">
             <button class="opt" data-q="2" data-v="cortex" data-part="upper" data-tag="神經 · 靜態思考"><span class="i">A</span><span class="v">NEURAL</span><span class="d">靜態思考 · 研究、寫作、開發</span></button>
-            <button class="opt" data-q="2" data-v="bespoke" data-part="upper" data-tag="戰術 · 高強度操作"><span class="i">B</span><span class="v">TACTICAL</span><span class="d">高強度操作 · 競技、直播</span></button>
-            <button class="opt" data-q="2" data-v="comfort" data-part="upper" data-tag="緩衝 · 間歇作業"><span class="i">C</span><span class="v">SOFT</span><span class="d">間歇作業 · 觀看、休息</span></button>
+            <button class="opt" data-q="2" data-v="enforcer" data-part="upper" data-tag="戰術 · 高強度操作"><span class="i">B</span><span class="v">TACTICAL</span><span class="d">高強度操作 · 競技、直播</span></button>
+            <button class="opt" data-q="2" data-v="puffie" data-part="upper" data-tag="緩衝 · 間歇作業"><span class="i">C</span><span class="v">SOFT</span><span class="d">間歇作業 · 觀看、休息</span></button>
           </div>
         </div>
         <div class="slot" data-q="3">
@@ -703,7 +723,7 @@
       <div class="lead">
         <p class="l1">員編 <b id="leadId" class="num">—</b>，您好。</p>
         <p class="l2">依作業配置核定，您已派發至 <b id="leadDiv">CORTEX</b> · <span id="leadZh">機構研發部門</span>。</p>
-        <p class="l3">以下為人事部核發之配置銘牌，請妥善保管。銘牌不得轉讓。</p>
+        <p class="l3">請維護你的位置，其餘一切，均由本公司維護。<br>以下為人事部核發之配置銘牌，請妥善保管。銘牌不得轉讓。</p>
       </div>
       <div class="plateWrap">
         <div class="tagS"><i></i><span>HR · <b id="tagId">T-—</b></span><i></i></div>
@@ -725,7 +745,7 @@
               <div><span class="lab">CLEARANCE</span><b>RECRUIT</b></div>
               <div><span class="lab">BUILD</span><b id="plBuild">—</b></div>
             </div>
-            <div class="prow"><span class="warn"><i class="arr"></i>DO NOT TRANSFER<br><small>轉讓視同離職</small></span><span class="mfr">ISSUED BY <span class="blackbar"></span><br><small>CHASSIS BY LIAN LI</small></span></div>
+            <div class="prow"><span class="warn"><i class="arr"></i>DO NOT TRANSFER<br><small>轉讓視同離職</small></span><span class="mfr">ISSUED BY <span class="blackbar"></span><br><small>PARTS BY LIAN LI</small></span></div>
           </div>
         </div>
         <div class="tagS"><i></i><span>ISSUED · NOT FOR RESALE</span><i></i></div>
@@ -739,7 +759,7 @@
 
 <footer class="foot">
   <span>THE CORP · 內部系統 · 本頁不對外索引</span>
-  <span>Chassis by Lian Li · Human hardware by Exobone</span>
+  <span>Parts by Lian Li · Exoskeleton by Exobone · Issued by THE CORP</span>
 </footer>
 
 <script>
@@ -773,7 +793,33 @@
   }
   function enter(){issue.hidden=true;document.body.style.overflow='';heroLines.forEach(function(l){l.classList.add('on')});}
   document.getElementById('reissue').addEventListener('click',runIssuance);
-  runIssuance();
+
+  // ---- intro film → then issuance ----
+  function playIntro(done,force){
+    var wrap=document.getElementById('intro'),v=document.getElementById('introVid');
+    var seen=false;try{seen=sessionStorage.getItem('corp_intro')==='1'}catch(e){}
+    if(!wrap||!v||(!force&&(seen||reduce))){done();return;}
+    var snd=document.getElementById('introSound'),skip=document.getElementById('introSkip'),bar=document.getElementById('introBar'),st=document.getElementById('introStart');
+    var finished=false;
+    function label(){snd.textContent=v.muted?'聲音 · Sound off':'聲音 · Sound on';}
+    function finish(){if(finished)return;finished=true;try{sessionStorage.setItem('corp_intro','1')}catch(e){}
+      v.pause();wrap.classList.add('out');document.removeEventListener('keydown',onKey);
+      setTimeout(function(){wrap.hidden=true;wrap.classList.remove('out');},750);done();}
+    function onKey(e){if(e.key==='Escape')finish();}
+    wrap.hidden=false;st.hidden=true;document.body.style.overflow='hidden';
+    try{v.currentTime=0}catch(e){}
+    v.onended=finish;v.onerror=finish;
+    v.ontimeupdate=function(){if(v.duration)bar.style.width=(v.currentTime/v.duration*100)+'%';};
+    skip.onclick=finish;
+    snd.onclick=function(){v.muted=!v.muted;label();};
+    document.getElementById('introPlay').onclick=function(){st.hidden=true;v.muted=false;label();v.play().catch(finish);};
+    document.addEventListener('keydown',onKey);
+    label();
+    var p=v.play();if(p&&p.catch)p.catch(function(){st.hidden=false;});
+  }
+  playIntro(runIssuance);
+  var nf=document.getElementById('navFilm');
+  if(nf)nf.addEventListener('click',function(e){e.preventDefault();playIntro(function(){document.body.style.overflow='';},true);});
 
 
   // ---- Memorandum clock ----
@@ -784,9 +830,9 @@
     var ans={},tags={};var slots=Array.prototype.slice.call(document.querySelectorAll('.slot'));
     var steps=Array.prototype.slice.call(document.querySelectorAll('#steps span'));
     var proc=document.getElementById('proc'),res=document.getElementById('res'),note=document.getElementById('asgNote'),stage=document.getElementById('stage');
-    var meta={cortex:{n:'CORTEX',zh:'Division 01 · 機構研發部門',d:'CORTEX · 機構研發部門'},bespoke:{n:'BESPOKE',zh:'Division 02 · 高訂局',d:'BESPOKE · 高訂局'},comfort:{n:'COMFORT',zh:'Division 03 · 消費事業部',d:'COMFORT · 消費事業部'}};
+    var meta={cortex:{n:'CORTEX',zh:'Division 01 · 機構研發部門',d:'CORTEX · 機構研發部門'},enforcer:{n:'ENFORCER',zh:'Division 02 · 高訂局',d:'ENFORCER · 高訂局'},puffie:{n:'PUFFIE',zh:'Division 03 · 消費事業部',d:'PUFFIE · 消費事業部'}};
     var ws={D:'WS-D · 完整桌面',O:'WS-O · 標準配置',R:'WS-R · 精簡配置'};
-    var g1={short:['33%','4H'],mid:['66%','8H'],long:['100%','12H+']},g2={cortex:['35%','NEURAL · 低負載 · 長時'],bespoke:['95%','TACTICAL · 高負載'],comfort:['15%','SOFT · 緩衝']},g3={D:['100%','FULL'],O:['62%','STD'],R:['30%','LITE']};
+    var g1={short:['33%','4H'],mid:['66%','8H'],long:['100%','12H+']},g2={cortex:['35%','NEURAL · 低負載 · 長時'],enforcer:['95%','TACTICAL · 高負載'],puffie:['15%','SOFT · 緩衝']},g3={D:['100%','FULL'],O:['62%','STD'],R:['30%','LITE']};
     var recN=0;
     document.getElementById('stageId').textContent=document.getElementById('stId').textContent;
     function setSlot(n){slots.forEach(function(sl){var q=+sl.getAttribute('data-q');sl.classList.toggle('on',q===n);sl.classList.toggle('done',q<n);});
@@ -806,7 +852,7 @@
       if(q==='3'){document.getElementById('g3').style.width=g3[v][0];document.getElementById('g3v').textContent=g3[v][1];}
       setTimeout(function(){if(ans['1']&&ans['2']&&ans['3'])finish();else setSlot(+q+1);},reduce?0:300);
     })});
-    function score(){var sc={cortex:0,bespoke:0,comfort:0};sc[ans['2']]+=2;if(ans['1']==='long')sc.cortex+=1;if(ans['1']==='mid')sc.bespoke+=1;if(ans['1']==='short')sc.comfort+=1;
+    function score(){var sc={cortex:0,enforcer:0,puffie:0};sc[ans['2']]+=2;if(ans['1']==='long')sc.cortex+=1;if(ans['1']==='mid')sc.enforcer+=1;if(ans['1']==='short')sc.puffie+=1;
       return Object.keys(sc).sort(function(a,b){return sc[b]-sc[a]})[0];}
     function finish(){slots.forEach(function(sl){sl.classList.remove('on');sl.classList.add('done')});steps.forEach(function(st,i){st.classList.remove('on');st.classList.add('done');if(i===3){st.classList.remove('done');st.classList.add('on');}});
       note.textContent='人事部核定中。';proc.classList.add('on');var ls=proc.querySelectorAll('.ln');ls.forEach(function(l){l.classList.remove('on')});
@@ -816,7 +862,7 @@
     function decodeAsg(el){var f=el.textContent,n=0;var t=setInterval(function(){n++;var o='';for(var i=0;i<f.length;i++){var c=f[i];if(c===' '){o+=c;continue;}o+= i<n*Math.ceil(f.length/8)?c:chars[Math.floor(Math.random()*chars.length)];}el.textContent=o;if(n>=9){clearInterval(t);el.textContent=f;}},50);}
     var curK=null;
     function result(){var k=score();curK=k;var m=meta[k];
-      var code={cortex:['CTX','01'],bespoke:['ENF','02'],comfort:['PUF','03']}[k];
+      var code={cortex:['CTX','01'],enforcer:['ENF','02'],puffie:['PUF','03']}[k];
       
       document.getElementById('plDiv').textContent=m.n;document.getElementById('plDivZh').textContent=m.d.split(' · ')[1];document.getElementById('leadDiv').textContent=m.n;document.getElementById('leadZh').textContent=m.d.split(' · ')[1];document.getElementById('leadId').textContent=document.getElementById('stId').textContent;
       document.getElementById('plObj').textContent=code[1];document.getElementById('plPn').textContent='EXB-'+code[0]+'-R01';
